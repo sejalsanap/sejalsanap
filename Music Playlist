@@ -1,0 +1,817 @@
+//class song Node
+
+public class Song {
+
+              String songName;
+
+              String artist;
+
+              Song nextSong;
+
+              Song prev;
+
+ 
+
+              public Song(String songName,String artist) {
+
+                           this.songName=songName;
+
+                           nextSong=null;
+
+                           prev=null;
+
+                           this.artist=artist;
+
+              }
+
+              public Song(String artist) {
+
+                           this.artist=artist;
+
+              }
+
+}
+
+ 
+
+public class Album {
+
+              Song firstSong;
+
+              Song lastSong;
+
+              Song current;
+
+              Song newAlbum[] = new Song[10];
+
+              int i=0;
+
+ 
+
+              public Album() {
+
+                           firstSong=null;
+
+                           lastSong=null;
+
+                           current=null;
+
+              }
+
+ 
+
+              public boolean isEmpty() {
+
+                           return (firstSong==null);
+
+              }
+
+ 
+
+              public Song inbuiltPlaylist() {
+
+ 
+
+                           addSong("Shayad         ","ArijitSingh");
+
+                           addSong("Kamariya       ", "DarshanRawal");
+
+                           addSong("AgarTumSaathHo ", "ArijitSingh");
+
+                           addSong("Pal            ", "ShreyaGhoshal");
+
+                           addSong("DilKoKaraarAaya", "NehaKakkar");
+
+                           addSong("TeraZikr       ", "DarshanRawal");
+
+                           addSong("Samjhawan      ", "ShreyaGhoshal");
+
+                           addSong("TuHiYaarMera   ", "NehaKakkar");
+
+                           addSong("SukoonMila     ", "ArijitSingh");
+
+ 
+
+                           current=firstSong;
+
+                           System.out.println("\nPlaying Songs from default Playlist : \n");
+
+                            System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                           System.out.println("\n\t\tCurrently Playing : "+current.songName+ " by "+ current.artist+ " ");
+
+                            System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                           return current;
+
+              }
+
+ 
+
+              public Song addSong(String songName,String artist) {
+
+                           Song newSong=new Song(songName,artist);
+
+ 
+
+                           if (isEmpty()) {
+
+                                         firstSong=newSong;
+
+                                         lastSong=newSong;
+
+                                         return firstSong;
+
+                           } else {
+
+                                         lastSong.nextSong=newSong;
+
+                                         newSong.prev=lastSong;
+
+                                         lastSong=newSong;
+
+                                         lastSong.nextSong=null;
+
+                                         return null;
+
+                           }
+
+ 
+
+              }
+
+ 
+
+              public Song deleteSong(Song current) {
+
+                           if (current==null) {
+
+                                         firstSong=null;
+
+                                         lastSong=null;
+
+ 
+
+                                         return current;
+
+                           }
+
+                           if (current.nextSong==null && current.prev==null) {
+
+ 
+
+                                         System.out.println("\n\t\t"+current.songName+" removed from Playlist !");
+
+                                         current=null;
+
+                                         firstSong=null;
+
+                                         lastSong=null;
+
+                                         System.out.println("\n\t\tNow the Playlist is Empty !");
+
+                                         return null;
+
+ 
+
+                           } else if (current.nextSong==null && current.prev!=null){
+
+ 
+
+                                         System.out.println("\n\t\t"+current.songName+" removed from Playlist !");
+
+                                         current=current.prev;
+
+                                         current.nextSong=null;
+
+                                         lastSong=current;
+
+                                         return current;
+
+ 
+
+                           } else if (current.prev==null && current.nextSong!=null) {
+
+ 
+
+                                         System.out.println("\n\t\t"+current.songName+" removed from Playlist !");
+
+                                         current=current.nextSong;
+
+                                         current.prev=null;
+
+                                         firstSong=current;
+
+                                         return current;
+
+ 
+
+                           } else {     //(current.prev!=null && current.nextSong!=null)
+
+ 
+
+                                         System.out.println("\n\t\t"+current.songName+" removed from Playlist !");
+
+                                         current.prev.nextSong=current.nextSong;
+
+                                         current.nextSong.prev=current.prev;
+
+                                         current=current.nextSong;
+
+                                         return current;
+
+                           }
+
+              }
+
+ 
+
+              public void displaySongs() {
+
+                           if (isEmpty()) {
+
+                                         return;
+
+                           } else {
+
+                                         int count=1;
+
+                                         Song current=firstSong;
+
+ 
+
+                                         System.out.println("\n\t\t>>>>>>>>>>>>>>>>>>>>>>>>>  MY PLAYLIST  <<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+
+                                         while (current != null) {
+
+                                                       System.out.print("\n\t\t"+count+". Song :" +current.songName+"\t---->\tArtist : "+current.artist);
+
+                                                       System.out.println("");
+
+                                                       current=current.nextSong;
+
+                                                       count++;
+
+                                         }
+
+                                         System.out.println("\n\t\t>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+
+                           }
+
+              }
+
+ 
+
+              public Song playPrev(Song currentSong) {
+
+                           Song  ptr=currentSong;
+
+ 
+
+                           if (currentSong==null) {
+
+                                         System.out.println("\n\t\tPlaylist Empty !!");
+
+                                         return null;
+
+                           } else {
+
+                                         currentSong=currentSong.prev;
+
+                                         if (currentSong==null) {
+
+                                                       System.out.println("\n\t\tCurrently playing the first song !\n\t\tNo songs prior to '"+ptr.songName+"'");
+
+                                                       return ptr;
+
+                                         } else {
+
+                                                       return currentSong;
+
+                                         }
+
+                           }
+
+              }
+
+ 
+
+              public Song playNext(Song currentSong) {
+
+                           Song ptr=currentSong;
+
+ 
+
+                           if (currentSong==null) {
+
+                                         System.out.println("\n\t\tPlaylist Empty !!");
+
+                                         return null;
+
+                           } else {
+
+                                         currentSong=currentSong.nextSong;
+
+                                         if (currentSong==null) {
+
+                                                       System.out.println("\n\t\tSorry!Playlist Ended!\n\t\tAdd more songs and enjoy uninterrupted Music  :)");
+
+                                                       return ptr;
+
+                                         } else {
+
+                                                       return currentSong;
+
+                                         }
+
+                           }
+
+              }
+
+ 
+
+              public Song replay(Song currentSong) {
+
+                           if (currentSong==null) {
+
+                                         System.out.println("\n\t\tPlaylist Empty !!");
+
+                           }
+
+                           return currentSong;
+
+              }
+
+ 
+
+              public void createSingerPlaylist(String artist) {
+
+                           int flag=0;
+
+                           newAlbum[i]=new Song(artist);
+
+                           Song current=firstSong;
+
+                           Song ptr;
+
+ 
+
+                           while (current != null) { 
+
+                                         if (current.artist.equals(artist)) {
+
+ 
+
+                                                       Song newArtistSong=new Song(current.songName,current.artist);
+
+                                                       ptr=newAlbum[i];  
+
+                                                       flag=1;
+
+ 
+
+                                                       while(ptr.nextSong!=null) {  
+
+                                                                    ptr=ptr.nextSong;
+
+                                                       }
+
+                                                       ptr.nextSong=newArtistSong;
+
+                                         }
+
+                                         current=current.nextSong;  
+
+                           }
+
+                           i=i+1;
+
+                           if (flag==1) {
+
+                                         System.out.println("\n"+artist+" Songs Added to playlist successfully !");
+
+                           } else {
+
+                                         System.out.println("\n\t\tNo songs of "+artist+" in the default playlist !\n\t\tPlease add songs of "+artist+"  to make a seperate playlist");
+
+                           }
+
+              }
+
+ 
+
+              public void displayAlbum(String artist) {
+
+                           Song ptr;
+
+                           int flag=0;
+
+ 
+
+                           for (int  i = 0; i < newAlbum.length; i++) {
+
+                                         if(this.newAlbum[i]!=null) {
+
+                                                       if (newAlbum[i].artist.equals(artist)) {
+
+                                                                    flag=1;
+
+                                                                    ptr=newAlbum[i];
+
+                                                                    System.out.println("\n\t\t>>>>>>>>>>>>>>>"+artist+" playlist <<<<<<<<<<<<<<\n");
+
+ 
+
+                                                                    while (ptr.nextSong!= null) {
+
+                                                                                  ptr=ptr.nextSong;
+
+                                                                                  System.out.println("\n\t\tSong Name : "+ptr.songName);
+
+                                                                    }
+
+                                                                    break;
+
+                                                       }
+
+                                         } else {
+
+                                                       flag=0;
+
+                                         }
+
+                           }
+
+                            System.out.println("\n\t\t>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<\n");
+
+                           if (flag==0) {
+
+                                         System.out.println("\n\t\t"+artist+" Playlist might not be created !\n\t\tPlease create a playlist to display it");
+
+                           }
+
+              }
+
+}
+
+ 
+
+import java.util.Scanner;
+
+ 
+
+public class MusicPlayer {
+
+              public static void main(String[] args) {
+
+                           Scanner sc=new Scanner(System.in);
+
+                           Album a=new Album();
+
+                           int choice=0;
+
+                           char ch;
+
+ 
+
+                           Song currentSong=a.inbuiltPlaylist();
+
+                           System.out.println("\nDefault Playlist : ");
+
+                           a.displaySongs();
+
+ 
+
+                           do {
+
+                                         System.out.println("\n\n>>>>>>>>>>>>>>>>>>> MUSIC PLAYER <<<<<<<<<<<<<<<<<<<<<<<");
+
+                                         System.out.println("\n\t1.Play next\n\t2.Play Previous\n\t3.Replay \n\t4.List of songs\n\t5.Delete Current Song \n\t6.Add new Song\n\t7.Create Playlist \n\t8.Display playlist \n\t9.Exit from Music Player");
+
+                                         System.out.println("\n\n>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+
+                                         System.out.print("\nEnter your Choice : ");
+
+                                         choice=sc.nextInt();
+
+ 
+
+                                         switch (choice) {
+
+                                         case 1:
+
+                                                       currentSong=a.playNext(currentSong);
+
+                                                       if (currentSong !=null) {
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                                    System.out.println("\n\t\tNow playing :"+currentSong.songName+" by "+ currentSong.artist);
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       }
+
+                                                       break;
+
+ 
+
+                                         case 2:
+
+                                                       currentSong=a.playPrev(currentSong);
+
+                                                       if (currentSong!=null) {
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                                    System.out.println("\n\t\tNow playing :"+currentSong.songName+" by "+ currentSong.artist);
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       }
+
+                                                       break;
+
+ 
+
+                                         case 3:
+
+                                                       currentSong=a.replay(currentSong);
+
+                                                       if (currentSong!=null) {
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                                    System.out.println("\n\t\tNow playing :"+currentSong.songName+" by "+ currentSong.artist);
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       }
+
+                                                       break;
+
+ 
+
+                                         case 4:
+
+                                                       a.displaySongs();
+
+                                                       if (currentSong==null) {
+
+                                                                    System.out.println("\n\t\tPlaylist Empty !!");
+
+                                                       }
+
+ 
+
+                                                       else {
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                                    System.out.println("\n\t\tNow playing :"+currentSong.songName+" by "+ currentSong.artist);
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       }
+
+                                                       break;
+
+ 
+
+                                         case 5:
+
+                                                       currentSong= a.deleteSong(currentSong);
+
+                                                       if (currentSong==null) {
+
+                                                                    System.out.println("\n\t\tThe playlist is Empty !\n\t\tThere are no songs to delete");
+
+                                                       } else {
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                                    System.out.println("\n\t\tNow playing :"+currentSong.songName+" by "+ currentSong.artist);
+
+                                                                     System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       }
+
+                                                       break;
+
+ 
+
+                                         case 6:
+
+                                                       System.out.print("\nEnter the Song Name : ");
+
+                                                       String songName=sc.next();
+
+                                                       System.out.print("\nEnter the Artist Name : ");
+
+                                                       String artist=sc.next();
+
+                                                       Song one=a.addSong(songName, artist);
+
+                                                       if (one!=null) {
+
+                                                                    currentSong=one;
+
+                                                                    System.out.println("\n Song Added in the default playlist !!\n");
+
+                                                       } else {
+
+                                                                    System.out.println("\n Song Added in the default playlist !!\n");
+
+                                                       }
+
+                                                       System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       System.out.println("\n\t\tNow playing :"+currentSong.songName+" by "+ currentSong.artist);
+
+                                                       System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       break;
+
+ 
+
+                                         case 7:
+
+                                                       do {
+
+                                                                    System.out.println("\n\t\tCREATING PLAYLIST OF FAVOURITE ARTIST :)\t\t");
+
+                                                                    System.out.println("\nChoose your favourite Artist :");
+
+                                                                    System.out.println("\n1.Arijit Singh\n2.Shreya Ghoshal\n3.Darshan Rawal\n4.Neha Kakkar\n5.Other");
+
+                                                                    switch(sc.nextInt()) {
+
+                                                                    case 1:
+
+                                                                                  a.createSingerPlaylist("ArijitSingh");
+
+                                                                                  break;
+
+ 
+
+                                                                    case 2:
+
+                                                                                  a.createSingerPlaylist("ShreyaGhoshal");
+
+                                                                                  break;
+
+ 
+
+                                                                    case 3:
+
+                                                                                  a.createSingerPlaylist("DarshanRawal");
+
+                                                                                  break;
+
+ 
+
+                                                                    case 4:
+
+                                                                                  a.createSingerPlaylist("NehaKakkar");
+
+                                                                                  break;
+
+ 
+
+                                                                    case 5:
+
+                                                                                  System.out.println("Enter  the name of singer whose playlist is to be made\n(eg : Please enter Shreya Ghoshal as 'ShreyaGhoshal')");
+
+                                                                                  a.createSingerPlaylist(sc.next());
+
+                                                                                  break;
+
+ 
+
+                                                                    default:
+
+                                                                                  System.out.println("Please enter valid choice !");
+
+                                                                                  break;
+
+                                                                    }
+
+                                                                    System.out.println("\nDo you wish to create a playlist of any other artist?(y/n)");
+
+                                                                    ch=sc.next().charAt(0);
+
+                                                       }while(ch=='y');
+
+                                                       System.out.println(" \n\t\tHOPE YOU CREATE A PLAYLIST WITH US THE NEXT TIME :)\t\t");
+
+                                                       System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       System.out.println("\n\t\tNow playing :"+currentSong.songName+" by "+ currentSong.artist);
+
+                                                       System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       break;
+
+ 
+
+                                         case 8:
+
+                                                       do {
+
+ 
+
+                                                                    System.out.println("\nSelect you favourite artist whose playlist has been created:");
+
+                                                                    System.out.println("\n1.Arijit Singh\n2.Shreya Ghoshal\n3.Darshan Rawal\n4.Neha Kakkar\n5.Other");
+
+                                                                    switch(sc.nextInt()) {
+
+                                                                    case 1:
+
+                                                                                  a.displayAlbum("ArijitSingh");
+
+                                                                                  break;
+
+ 
+
+                                                                    case 2:
+
+                                                                                  a.displayAlbum("ShreyaGhoshal");
+
+                                                                                  break;
+
+ 
+
+                                                                    case 3:
+
+                                                                                  a.displayAlbum("DarshanRawal");
+
+                                                                                  break;
+
+ 
+
+                                                                    case 4:
+
+                                                                                  a.displayAlbum("NehaKakkar");
+
+                                                                                  break;
+
+ 
+
+                                                                    case 5:
+
+                                                                                  System.out.println("\nEnter the name of the artist whose playlist you want to display");
+
+                                                                                  a.displayAlbum(sc.next());
+
+                                                                                  break;
+
+ 
+
+                                                                    default:
+
+                                                                                  System.out.println("Please enter valid choice !");
+
+                                                                                  break;
+
+                                                                    }
+
+                                                                    System.out.println("\nDo you wish to display the playlist of any other artist?(y/n)");
+
+                                                                    ch=sc.next().charAt(0);
+
+                                                       }while(ch=='y');
+
+                                                       System.out.println(" \n\t\tHOPE YOU KEEP LISTENING TO OUR PLAYLIST NEXT TIME :)\t\t");
+
+                                                       System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       System.out.println("\n\t\tNow playing :"+currentSong.songName+" by "+ currentSong.artist);
+
+                                                       System.out.println("\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                                                       break;
+
+ 
+
+                                         case 9:
+
+                                                       System.out.println("\n\n\t\tTHANK YOU FOR ENJOYING THE MUSIC WITH US :)\t\t\n");
+
+                                                       break;
+
+ 
+
+                                         default:
+
+                                                       System.out.println("\nInvalid Choice ! Please enter a valid Choice.");
+
+                                                       break;
+
+                                         }
+
+                           }while (choice != 9);
+
+              }
+
+}
